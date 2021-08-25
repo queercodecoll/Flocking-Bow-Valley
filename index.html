@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bow Valley QT Stories</title>
+    <link rel="shortcut icon" href="images/QueercodeIcon.png" type="image/png">
+    <link href="styles.css" type="text/css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.min.js"></script>
+    <script src="libraries/p5.sound.min.js"></script>
+
+    <script src="boid.js"></script>
+    <script src="flock.js"></script>
+    <script src="institution.js"></script>
+    <script src="story.js"></script>
+    <script src="soundAnalysis.js"></script>
+    <script src="ui.js"></script>
+    <script src="sketch.js"></script>
+  </head>
+  <body>
+    <div class ="headerContainer">
+      <div class ="logo">
+        <a href="https://queercode.org/">
+        <img src="images/queercodelogo.png" alt="Queer Code Logo"/></a>
+      </div>
+
+      <div class="topnav" id="myTopnav">
+        <a href="https://queercode.org/">Home</a>
+        <a href="https://queercode.org/news/">News</a>
+        <a href="https://queercode.org/team/">Team</a>
+        <a href="https://queercode.org/research/">Research</a>
+        <div class="dropdown">
+          <a href="https://queercode.org/projects/" button class="dropbtn">Projects</a>
+            <i class="fa fa-caret-down"></i>
+          </button>
+        <div class="dropdown-content">
+          <a href="https://queercode.org/projects/mementorium/">Mementorium</a>
+          <a href="https://queercode.org/projects/creative-futures/">Creative Futures</a>
+          <a href="https://flocking.queercode.org" class="active">Flocking QT Stories</a>
+          <a href="https://queercode.org/projects/queer-and-trans-narratives-in-virtual-reality/">Queer and Trans Narratives in Virtual Reality</a>
+        </div>
+      </div>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
+      </div>
+</div>
+    <div id ="content">
+      <div id ="title">
+      <h1>Bow Valley QT Stories</h1>
+      </div>
+      <div id ="canvasDiv">
+      </div>
+      <div id="UI_Container">
+        <div id="UI_column1">
+        </div>
+        <div id="UI_column2">
+        </div>
+      </div>
+      <div id="longTextContainer">
+        <div class ="longText">
+          <h3>Instructions</h3>
+          <ol>
+            <li>Watch the simulation to see how non-normative (pink) boids are affected by crossing paths with normative (white) boids and institutions and non-normative boids and institutions.</li>
+            <li>Turn on/off the ‘Show Interactions’ button to show effects of harm (red lines) and support (turquoise lines).</li>
+            <li>Click on a non-normative (pink) boid to hear a real-life story about gender or sexuality-based marginalization and resilience.</li>
+          </ol>
+          <p><br /></p>
+          <p lang="en-us">Flocking QT Stories models the <em>emergent behaviour</em> of societal gender and sexuality-based marginalization (harm) and resilience (support).
+          Emergent behaviors are new behaviors (or patterns in a simulation) that are not planned but rather arise from a simple set of rules. What can you see as the kinds of
+          emergent behaviours arising from the simple interactions of harm and support that non-normative (pink) boids experience? What impact do many small harmful
+          interactions have over time? What does harm and support from people and instititutions look like for people of <em>all</em> genders and sexualities?</p>
+          <p><br /></p>
+          <p lang="en-us">The stories in the simulation have been collected from people with various gender and sexual identities, including cisgender and transgender, and queer (LGBQ+) and heterosexual people.</p>
+          <p><br /></p>
+          <h3>Reflection Questions Download</h3>
+          <p lang="en-us">For an extended list of reflection questions to guide interaction with the simulation, download the <a href="https://queercodeorg.files.wordpress.com/2020/11/flocking-qt-stories-reflection-questions.pdf" target="_blank"><b>Flocking QT Stories Reflection Questions PDF</b></a></p>
+        </div>
+        <div class="longText">
+          <h3>Rules of the Simulation</h3>
+          <p lang="en-us">In the simulation, there are four types of computational agents: normative and non-normative <i>boids</i> or bird-droids (a term coined by Craig Reynolds),
+          and two types of <i>institutions</i>: normative and non-normative. Proximity to normative boids and institutions "drains" energy from the non-normative boids,
+          and proximity to other non-normative boids and institutions increases their energy. Each non-normative boid "carries" and audio story - a first person account
+          of gender and/or sexuality-based marginalization and resilience.
+          <p><br /></p>
+          All of the boids move according to Craig Reynolds' (1987) flocking algorithm. In Reynolds' algorithm, the rules obeyed by each boid are
+          alignment, separation, and cohesion. Alignment means that a boid tends to turn so that it is moving in the same direction that nearby boids are moving.
+          Separation means that a boid will turn to avoid another boid which gets too close. Cohesion means that a boid will move towards other nearby boids (unless
+          another boid is too close).
+          <p><br /></p>
+          In addition to these forces that are always in play, when a non-normative boid's story is activated, all the non-normative boids' movements
+          are also affected in part by the frequences of the audio file which is broadcasted to all non-normative boids in the simulation. Higher-frequency sounds affect
+          the cohesive motion, lower-frequency sounds affect the separation, and medium-frequency sounds align their directions with neighbouring boids. The overall
+          effect is that the movement pattern of the non-normative boids is visually distinct from the normative boids while a story is being played.
+          The non-normative boids vibrate synchronously while also flocking.</p>
+        </div>
+        <div class="longText">
+          <h3>Description and History</h3>
+          <p lang="en-us">
+            Flocking QT Stories, is an interactive digital art installation that explores how computational simulations of emergent complex behaviours, combined with storytelling,
+            might provide us with new ways to deepen our understanding of gender and sexuality-based marginalization and resilience through computer modeling and art.
+          <p><br /></p>
+            Flocking QT Stories is part of Dylan Paré’s dissertation in the Learning Sciences in the Werklund School of Education at the University of Calgary, Canada.
+            The simulation was initially developed during the <a href="https://www.m3lab.org" target="_blank">Mind, Matter and Media Lab</a>’s Paul D. Fleck artist residency in the Leighton Studios at the Banff Centre for Arts and Creativity in April 2019 using
+            Processing 3.5.4. Then in May 2020, it was re-written in p5.js 1.0.0 for display on the internet using GitHub and GitHub Pages in order to share the simulation
+            with a larger audience. The simulation has exhibited at the Banff Centre for Arts and Creativity, TELUS Spark Science Centre, and at DigiPlay, a public exhibit
+            space at the University of Calgary Werklund School of Education.
+          </p>
+        </div>
+        <p><br /></p>
+          <div class="longText">
+            <h3>Research</h3>
+            <p lang="en-us">Research with Flocking QT Stories is ongoing as part of Dylan Paré's dissertation research.</p>
+            <ul>
+              <li>Paré, D., Shanahan, M-C. & Sengupta, P. (2020). Queering Complexity Using Multi-Agent Simulations.
+                In M. Gresalfi & L. Horn (Eds.), <i>Interdisciplinarity in the Learning Sciences, 14th International Conference of the Learning Sciences (ICLS)</i>, (pp. 1397-1404). London: International Society of the Learning Sciences. <a href="https://www.researchgate.net/publication/340902907_Queering_Complexity_Using_Multi-Agent_Simulations" target= "_blank">Queering Complexity Using Multi-Agent Simulations</a>.
+                <ul><li><b>Nominated for Best Student Paper at the 2020 International Conference of the Learning Sciences.</b></li></ul></li>
+            </ul>
+          </div>
+        <p><br /></p>
+        <div class="longText">
+          <h3>Media Coverage</h3>
+          <p lang="en-us">Rocky Mountain Outlook: <a href="https://www.rmoutlook.com/article/boids-demonstrate-deeper-meaning-for-lgbtq-experiences-20190510" target= "_blank">‘Boids’ demonstrate deeper meaning for LGBTQ experiences</a></p>
+          <p><br /></p>
+          <p><a href="https://www.facebook.com/BanffCentre/videos/2269883573278719/" target="_blank">Banff Centre for Arts and Creativity - Open Studio video:</a></p>
+          <div class="video_wrapper">
+          <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FBanffCentre%2Fvideos%2F2269883573278719%2F&show_text=0&width=560" width="100%" height="100%" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>
+        </div>
+        </div>
+        <p><br /></p>
+        <div class="longText">
+          <h3>Funding Sources</h3>
+            <p lang="en-us">Funding from US National Science Foundation, the Banff Centre for Arts and Creativity, and Alberta Innovates are gratefully acknowledged.
+               The findings and products of the research are not endorsed by any of the funding agencies.
+               This work was partly funded by a Paul D. Fleck fellowship, an artist residency awarded to Dr. Pratim Sengupta, Dr. Marie-Claire Shanahan and Dylan Paré at the Leighton Studios
+               at the Banff Centre for Arts and Creativity. The online version of the simulation was also supported by John Craig's 2020 Program for Undergraduate Research Experience (PURE) Award
+               from the University of Calgary, Canada.</p>
+         </div>
+        <p><br /></p>
+        <div class="longText">
+        <h3>Authors and Acknowledgements</h3>
+            <p lang="en-us">Flocking QT Stories was designed by Dylan Paré, coded by Dylan Paré and John Craig, and received advisory support from Dr. Pratim Sengupta and Dr. Marie-Claire Shanahan of the
+            Mind, Matter and Media Lab at the University of Calgary Werklund School of Education, Canada. Thank you to the people who shared their personal stories with me for the purposes of this project.</p>
+        </div>
+        <p><br /></p>
+        <div class="longText">
+          <h3>Tell Us What You Think</h3>
+          <p lang="en-us">Take the Queer Code Collective survey at Crowdsignal.com</p>
+          <p><br /></p>
+          <a href="http://dmpare.survey.fm/queer-code-survey" target="_blank" style="font-weight:bold">Get Started</a>
+          <p><br /></p>
+          <p lang="en-us">Your feedback helps us to know more about the impact of our work and ways to improve it.</p>
+          <p><br /></p>
+          <p>Questions with a <font color="red">*</font>red asterisk are required, but most questions are optional. </p>
+          <p>Note: loading this survey will set a Crowdsignal cookie in your browser.</p>
+        </div>
+        <p><br /></p>
+        <div class="longText">
+          <h3>Copyright</h3>
+            <p lang="en-us">©The Flocking QT Stories <strong>audio files</strong> are the property of the speakers/authors and were shared with the creators of the Flocking QT Stories simulation only for the
+              purposes of the Flocking QT Stories simulation online webpage and public installations organized in coordination with the creator of the Flocking QT Stories simulation. You may not
+              copy, share, re-mix, or otherwise use the audio stories outside of the context of the online webpage for Flocking QT Stories.</p>
+              <p><br /></p>
+              ©The Flocking QT Stories <strong>code</strong> by Dylan Paré is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode" target= "_blank"> Creative Commons
+              Attribution-NonCommercial-ShareAlike 4.0 International License</a>. The Processing implementation of the standard (non-frequency based) flocking algorithm
+              was created by Daniel Shiffman based upon Craig Reynold's Boids program.</p>
+
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target= "_blank"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />
+        </div>
+      </div>
+    </div>
+
+  <script>
+  function myFunction() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+      x.className += " responsive";
+    } else {
+      x.className = "topnav";
+    }
+  }
+  </script>
+
+  </body>
+</html>
