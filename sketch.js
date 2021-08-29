@@ -123,11 +123,11 @@ function setup() {
   cnv.mouseClicked(canvasClicked);  //set callback function for when canvas is clicked
 
   //Define colours
-  normColour = color(0);
+  normColour = color(255);
   nonColour = color(255,0,255);
 
   //Set frame rate. Set to 30 to limit processing power needed
-  frameRate(20);
+  frameRate(30);
 
   //Sound analysis setup
   fft = new p5.FFT();
@@ -246,7 +246,7 @@ function loadCanvas(){
   textboxPos= createVector(width/2, height-textboxSize.y/2 - 10);
 
   //Set number of boids per story dependant on canvas size
-  let maxMult = 4;  //Set number of boids per story at maximum canvas size
+  let maxMult = 10;  //Set number of boids per story at maximum canvas size
   let interval = (maxWidth-minWidth) / (maxMult); //determine interval sizes
   for(let i = 0; i < maxMult; i++){
     let bounds = (i*interval) + minWidth; //determine the boundary for this interval (starting with smallest)
@@ -293,6 +293,8 @@ function loadCanvas(){
     institutions.push(new Institution(boidType.NORM)); //Add new normative institution
   }
 
+  let spacer = select('#canvasSpacer');
+  spacer.size(cnv.width, cnv.height);
 //End loadCanvas
 }
 //----------------------------------------------------------------------------
