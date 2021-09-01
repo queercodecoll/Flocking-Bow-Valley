@@ -321,14 +321,14 @@ class Boid {
     //Set colour for non-normative boid, where transparency is proportional to its energy
     else {
       stroke(nonColour);
-      fill(255,0,255, (255* this.energy / this.maxEnergy));
+      fill((255* this.energy / this.maxEnergy),0,(255* this.energy / this.maxEnergy));
     }
 
     //Determine rotation of boid
     //var rot = -this.velocity.angleBetween(createVector(0,1)); //Find the angle between a straight up vector and velocity
     var rot = this.velocity.heading();
     //Draw the boid
-    strokeWeight(1);  //Set the line width
+    strokeWeight(1*sizeMult);  //Set the line width
     push();           //push the current drawing matrix to the stack (start at 0,0)
       translate(this.position.x, this.position.y);  //Set current drawing position to this boids position
       rotate(rot);  //Rotate the drawing space so that velocity points directly up
@@ -561,6 +561,12 @@ class Boid {
     this.neighbours = []; //reset the list of close neighbours
     this.neighboursFar = []; //reset the list of far neighbours
   //End process
+  }
+  //----------------------------------------------------------------------------
+  resetEnergy(){
+    this.energy = this.maxEnergy;
+    this.velocity = createVector(random(-1,1), random(-1,1))
+    this.velocity.setMag(random(this.maxSpeed));
   }
 //End Boid Class
 }

@@ -49,6 +49,9 @@ let fft; //Container for Fast Fourier Tansform for audio analysis
 var divLoading, txtLoading, barLoading, progLoading, divShadow;
 var storiesLoaded, percentLoaded, numStories;
 
+let sldKeyDown = false; //flag if slider keys are pressed
+let keyDownTime = 0; //time when key was pressed
+
 let fr = 0;
 //----------------------------------------------------------------------------
 //Before showing page...
@@ -124,8 +127,9 @@ function setup() {
 
   //Create the canvas
   let canvasWidth = constrain(windowWidth, minWidth, maxWidth);
-  let canvasHeight = map(canvasWidth, minWidth, maxWidth, minHeight, windowHeight - 150);
-  canvasHeight = max(canvasHeight, minHeight);
+  let divLegend = select('#postCanvasDiv');
+  let canvasHeight = map(canvasWidth, minWidth, maxWidth, minHeight, windowHeight - 200);
+  canvasHeight = windowHeight - 200;
   cnv = createCanvas(windowWidth, canvasHeight);
   cnv.mouseClicked(canvasClicked);  //set callback function for when canvas is clicked
 
@@ -178,10 +182,27 @@ function draw() {
   flock.process();                    //Run the flock (which in turn runs the boids)
   displaySubtitles(activeStory);      //Update the subtitles
   sldNumNormsChanged();               //Update the number of normatives with respect to the slider
-  if(frameCount % 300 == 0){selectFollowBoid();} //Select a boid to follow every n frames
-  if(activeStory == null || (activeStory != null && !activeStory.isPlaying)) {
-    drawInvite();                     //Draw an invite near the followed boid
-  }                                   //Only if the story is not playing
+
+  // if(frameCount % 300 == 0){selectFollowBoid();} //Select a boid to follow every n frames
+  // if(activeStory == null || (activeStory != null && !activeStory.isPlaying)) {
+  //   drawInvite();                     //Draw an invite near the followed boid
+  // }                                   //Only if the story is not playing
+
+  //Check slider key press - allow for long presses of left/right to change slider
+  if(sldKeyDown && frameCount % 3 == 0){
+    //Check if time out has passed
+    if(keyIsDown(RIGHT_ARROW) && keyDownTime < millis()){
+      sldNumNorms.value(min(2,sldNumNorms.value()+(1.0/startNBoids)));
+      sldNumNormsChanged();
+    }
+    else if(keyIsDown(LEFT_ARROW) && keyDownTime < millis()){
+      sldNumNorms.value(max(0,sldNumNorms.value()-(1.0/startNBoids)));
+      sldNumNormsChanged();
+    }
+    else if(keyDownTime < millis()){
+      sldKeyDown = false;
+    }
+  }
 
   //Draw Frame rate
   if(millis() % 500 >= 0 && millis() % 500 <= 25){
@@ -253,8 +274,10 @@ function getNearestQBoid(point){
 function windowResized(){
   //Resize the canvas to fit the window (within min and max values)
   let canvasWidth = constrain(windowWidth, minWidth, maxWidth);
-  let canvasHeight = map(canvasWidth, minWidth, maxWidth, minHeight, windowHeight - 150);
-  canvasHeight = max(canvasHeight, minHeight);
+  let divLegend = document.querySelector("#postCanvasDiv");
+  // let canvasHeight = map(canvasWidth, minWidth, maxWidth, minHeight, windowHeight - divLegend.offsetHeight);
+  // canvasHeight = max(canvasHeight, minHeight);
+  canvasHeight = windowHeight-200;
 
   if(canvasWidth != cnv.width || canvasHeight != cnv.height){ //If the width has changed
                                 //Intended to prevent phone scrolling triggering a resize event
@@ -344,9 +367,6 @@ function loadCanvas(){
 
     institutions.push(new Institution(boidType.NORM)); //Add new normative institution
   }
-
-  let spacer = select('#canvasSpacer');
-  spacer.size(cnv.width, cnv.height + 5);
 //End loadCanvas
 }
 //----------------------------------------------------------------------------
@@ -374,6 +394,7 @@ function drawInvite(){
   stroke(200);
   strokeWeight(2);
   triangle(followOffset + position.x - 2, position.y -2 + 5, followOffset + position.x -2, position.y + 13 +5, followOffset + position.x + 13, position.y-2 + 5);
+
 //End drawInvite
 }
 //----------------------------------------------------------------------------
@@ -383,4 +404,27 @@ function selectFollowBoid(){
       followBoid = random(flock.boidList);
     }while(followBoid.bType != boidType.NON);
 //End selectFollowBoid
+}
+//----------------------------------------------------------------------------
+//KEYBOARD FUNCTIONSj
+function keyPressed(){
+  if(keyCode === LEFT_ARROW){
+    sldNumNorms.value(max(0,sldNumNorms.value()-(1.0/startNBoids)));
+    sldNumNormsChanged();
+    sldKeyDown = true;
+    keyDownTime = millis() + 250;
+  }
+  else if(keyCode === RIGHT_ARROW){
+    sldNumNorms.value(min(2,sldNumNorms.value()+(1.0/startNBoids)));
+    sldNumNormsChanged();
+    sldKeyDown = true;
+    keyDownTime = millis() + 250;
+  }
+  else if(key === 'h'){
+    cbxInteractions.checked(!cbxInteractions.checked());
+    cbxIntClicked();
+  }
+  else if(key === 'r'){
+    flock.resetBoidEnergy();
+  }
 }

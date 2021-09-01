@@ -84,5 +84,11 @@ class Flock {
     }
   //End process
   }
+  //---------------------------------------------------------------------------
+  resetBoidEnergy(){
+    for(let b of this.boidList){
+      b.resetEnergy();
+    }
+  }
 //End Class
 }

@@ -24,21 +24,23 @@ function createGUI(){
 
   //CONTROLS
   //Get division that contains the buttons and sliders
-  divControls = select('#UI_column1');
+  divControls4 = select('#UI_column4');
+  divControls5 = select('#UI_column5');
 
   //CHECKBOX
   //Create a checkbox for toggling interactions being drawn
   //Add to Controls division
   cbxInteractions = createCheckbox('Show/Hide Interactions',true);
   cbxInteractions.changed(cbxIntClicked);
-  cbxInteractions.parent(divControls);
+  //cbxInteractions.parent(divControls4);
   cbxInteractions.size(200, 40);
+  cbxInteractions.style("display","none"); //Hide the checkbox
 
   //SLIDER
   //Create container for all elements; slider heading, data/value, slider element
   //Set as child of Controls division
   divLbl = createDiv();
-  divLbl.parent(divControls);
+  divLbl.parent(divControls5);
   divLbl.size(285);
   divLbl.style('border-style', 'solid');
   //Create slider heading
@@ -46,20 +48,24 @@ function createGUI(){
   lblRatio.parent(divLbl);
   lblRatio.style('font', 'bold');
   lblRatio.style('text-align', 'center');
+  lblRatio.style('color', 'white')
   //Create slider value explanation
   lblNumNorms = createP("Normative to Non-normative = " + startNBoids + " : " + startQBoids*objStories.length)
   lblNumNorms.parent(divLbl);
+  lblNumNorms.style('color', 'white');
   //Create slider element
   //Division containing slider used to set background colour
   divSlider = createDiv();
   divSlider.parent(divLbl);
   divSlider.style('background-color', '#000');
+  divSlider.style('color', 'white');
   divSlider.size(285,25);
   //Slider parameters; min value = 0, max value = 2, starting value = 1, step = 0 for contiunous
   sldNumNorms = createSlider(0, 2, 1, 0); //Works as multiplier to generate number of norm boids
   sldNumNorms.parent(divSlider);
   sldNumNorms.style('width', '280px');    //Set width of slider;
 
+/*
   //BUTTONS
   //Create division to contain button elements
   //Set as child of Controls division
@@ -78,7 +84,8 @@ function createGUI(){
   btnNext.parent(divButtons);
   btnNext.size(100,35);
   btnNext.style('margin', '7%');
-
+*/
+/*
   //LEGEND
   //Create division for the legend and load the legend image into it
   divLegend = select('#UI_column2');
@@ -89,7 +96,7 @@ function createGUI(){
   //INSTRUCTIONS
   //Get paragraph element for instructions
   txtInstructions = select('#Instructions');
-
+*/
 //End createGUI
 }
 //----------------------------------------------------------------------------
