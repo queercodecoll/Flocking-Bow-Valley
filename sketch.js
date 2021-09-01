@@ -32,13 +32,13 @@ let followBoid;
 
 //GLOBAL VARIABLES FOR CANVAS
 let cnv; //Container for the canvas
-let bkgImg; //Background image for canvas
+let bkgImg, bkgWidth, bkgHeight; //Background image for canvas
 
 //Define max/min canvas sizes
 const minWidth = 320;
-const maxWidth = 960;
+const maxWidth = 1920;
 const minHeight = 320;
-const maxHeight = 540;
+const maxHeight = 1080;
 
 //OTHER GLOBAL VARIABLES
 let fft; //Container for Fast Fourier Tansform for audio analysis
@@ -46,6 +46,7 @@ let fft; //Container for Fast Fourier Tansform for audio analysis
 var divLoading, txtLoading, barLoading, progLoading, divShadow;
 var storiesLoaded, percentLoaded, numStories;
 
+let fr = 0;
 //----------------------------------------------------------------------------
 //Before showing page...
 function preload(){
@@ -97,6 +98,8 @@ function preload(){
 
   //Load background image
   bkgImg = loadImage('./images/backgroundMap.png');
+  bkgWidth = bkgImg.width;
+  bkgHeight = bkgImg.height;
 
 //End preload
 }
@@ -118,8 +121,8 @@ function setup() {
 
   //Create the canvas
   let canvasWidth = constrain(windowWidth, minWidth, maxWidth);
-  let canvasHeight = map(canvasWidth, minWidth, maxWidth, minHeight, maxHeight);
-  cnv = createCanvas(canvasWidth, canvasHeight);
+  let canvasHeight = map(canvasWidth, minWidth, maxWidth, minHeight, min(maxHeight, windowHeight - 150));
+  cnv = createCanvas(windowWidth, canvasHeight);
   cnv.mouseClicked(canvasClicked);  //set callback function for when canvas is clicked
 
   //Define colours
@@ -145,8 +148,16 @@ function setup() {
 function draw() {
 
   //Draw map of Canmore as background
+  background(0);
   imageMode(CENTER);
-  image(bkgImg, width/2, height/2);
+  //Resize image to fit width of screen or min size
+  if(windowWidth > bkgImg.width){
+    image(bkgImg, width/2, height/2, windowWidth, windowWidth * bkgWidth/bkgHeight);
+  }
+  else{
+    image(bkgImg, width/2, height/2);
+  }
+
   //Draw tint
   background(0,255,0,25);
   drawInstitutions(institutions);     //Draw the institutions
@@ -157,6 +168,13 @@ function draw() {
   if(activeStory == null || (activeStory != null && !activeStory.isPlaying)) {
     drawInvite();                     //Draw an invite near the followed boid
   }                                   //Only if the story is not playing
+
+  //Draw Frame rate
+  if(millis() % 500 >= 0 && millis() % 500 <= 25){
+    fr = parseInt(frameRate());
+    console.log("hit");
+  }
+  text("Frame Rate: " + fr, 60, 200);
 //End draw
 }
 //----------------------------------------------------------------------------
@@ -218,11 +236,11 @@ function getNearestQBoid(point){
 function windowResized(){
   //Resize the canvas to fit the window (within min and max values)
   let canvasWidth = constrain(windowWidth, minWidth, maxWidth);
-  let canvasHeight = map(canvasWidth, minWidth, maxWidth, minHeight, maxHeight);
+  let canvasHeight = map(canvasWidth, minWidth, maxWidth, minHeight, min(maxHeight, windowHeight - 150));
 
-  if(canvasWidth != cnv.width){ //If the width has changed
+  if(canvasWidth != cnv.width || canvasHeight != cnv.height){ //If the width has changed
                                 //Intended to prevent phone scrolling triggering a resize event
-    resizeCanvas(canvasWidth, canvasHeight);
+    resizeCanvas(windowWidth, canvasHeight);
 
     //Reload boid world (canvas)
     loadCanvas();
@@ -246,16 +264,20 @@ function loadCanvas(){
   textboxPos= createVector(width/2, height-textboxSize.y/2 - 10);
 
   //Set number of boids per story dependant on canvas size
-  let maxMult = 10;  //Set number of boids per story at maximum canvas size
-  let interval = (maxWidth-minWidth) / (maxMult); //determine interval sizes
-  for(let i = 0; i < maxMult; i++){
-    let bounds = (i*interval) + minWidth; //determine the boundary for this interval (starting with smallest)
-    if(width > bounds){
-      numBoidsMult = i+1; //Set the multiplier to a value of 1 to maxMult
-                          //Starting with lowest value allows loop to find
-                          //the largest multiplier for this interval/boundary
-    }
-  }
+  // let maxMult = 4;  //Set number of boids per story at maximum canvas size
+  // let interval = (maxWidth-minWidth) / (maxMult); //determine interval sizes
+  // for(let i = 0; i < maxMult; i++){
+  //   let bounds = (i*interval) + minWidth; //determine the boundary for this interval (starting with smallest)
+  //   if(width > bounds){
+  //     numBoidsMult = i+1; //Set the multiplier to a value of 1 to maxMult
+  //                         //Starting with lowest value allows loop to find
+  //                         //the largest multiplier for this interval/boundary
+  //   }
+  // }
+
+  //Determine boid number multiplier by number of intervals in windowWidth
+  let intervalSize = 180;
+  let numBoidsMult = parseInt(windowWidth / intervalSize);
 
   //Start boid SETTINGS
   //starting values are relative to the size of the canvas and the number of stories
@@ -294,7 +316,7 @@ function loadCanvas(){
   }
 
   let spacer = select('#canvasSpacer');
-  spacer.size(cnv.width, cnv.height);
+  spacer.size(cnv.width, cnv.height + 5);
 //End loadCanvas
 }
 //----------------------------------------------------------------------------
