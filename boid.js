@@ -32,7 +32,8 @@ class Boid {
     //through the whole boid list each time.
     this.neighbours = []; //List of close neighbours (within distance of neighbourRange)
     this.neighboursFar = []; //List of farther neighbours (between neighbourRange and neighbourFarRange)
-    this.neighbourRange = 20; //Max range that defines a "close" neighbour, and min dist for "far" neighbour
+    this.neighbourRangeBase = 20; //Max range that defines a "close" neighbour, and min dist for "far" neighbour
+    this.neighbourRange = this.neighbourRangeBase;
     this.neighbourFarRange = this.neighbourRange * 1.5; //Max range that defines a "far" neighbour
 
     //Energy
@@ -309,7 +310,7 @@ class Boid {
   //If the boid's story is selected and playing, draw a circle around it
   //to signify that the boid is selected.
   render(){
-    let boidSize = 4; //Size of boids on the canvas
+    let boidSize = 4 * sizeMult; //Size of boids on the canvas
 
     //Set colour for normative boid
     if(this.bType === boidType.NORM){
@@ -341,7 +342,7 @@ class Boid {
     //Show that the boid's story is selected (if story is playing)
     if(this.story != null && this.story === activeStory && activeStory.isPlaying()){
       stroke(50,255,50);
-      strokeWeight(2);
+      strokeWeight(2*sizeMult);
       noFill();
       circle(this.position.x, this.position.y, boidSize*6);
     }
@@ -349,7 +350,7 @@ class Boid {
     //Identify Boid-0
     if(this.id === 0){
       stroke(200,0,0);
-      strokeWeight(2);
+      strokeWeight(2*sizeMult);
       noFill();
       circle(this.position.x, this.position.y, boidSize*6);
     }
@@ -364,7 +365,7 @@ class Boid {
   minorityExperience(insts){
     let harmColor = color(255,0,0); //Colour of the harm lines
     let supportColor = color(0,255,255); //Colour of the support lines
-    let lineSize = 1; //Size of the interaction lines
+    let lineSize = 1*sizeMult; //Size of the interaction lines
     let boidsInRange = []; //Container for boids interacting with this one
     let otherPos; //Container for the other boid's position (or reflective position)
     let minEnergy = 0; //Set default minimum energy;
@@ -546,6 +547,9 @@ class Boid {
   //----------------------------------------------------------------------------
   //Run the boids
   process(){
+    this.neighbourRange = this.neighbourRangeBase * sizeMult; //Determine size-base neighbour range
+    this.neighbourFarRange = this.neighbourRange * 1.5; //Re-calc far-neighbour range
+    this.experienceDist = this.neighbourRange * 1.5; //Re-calc experience distance
     this.boundaryCheck(); //Check that the boids position is not outside the area
     this.findNeighbours(this.parent.boidList); //build the list of neighbours
     this.calcAcceleration(); //Determine flocking variables; alignment, cohesion, separation

@@ -14,13 +14,14 @@ class Institution {
       x = round(random(width));
       y = round(random(height));
       pos = createVector(x,y);
-    }while(isUnderSubs(pos));
+    }while(isUnderSubs(pos) && this.overlapingInst());
     this.position = pos;
+    this.size = 10;
   }
   //---------------------------------------------------------------------------
   //Draw this institution
   render(){
-    let instSize = 10;  //Size of institutions
+    let instSize = this.size * sizeMult;  //Size of institutions
 
     //Choose colour based on type
     //non-normative
@@ -39,6 +40,17 @@ class Institution {
     //Draw square with center at given position
     rectMode(CENTER);
     square(this.position.x, this.position.y, instSize);
+  }
+
+  //---------------------------------------------------------------------------
+  //Test if this institution is overlapping another
+  overlapingInst(){
+    for(let i in institutions){
+      if(dist(i.x,i.y, this.x,this.y) < this.size*sizeMult){
+        return true;
+      }
+    }
+    return false;
   }
 //End Class
 }

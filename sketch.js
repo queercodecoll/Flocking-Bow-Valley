@@ -33,6 +33,9 @@ let followBoid;
 //GLOBAL VARIABLES FOR CANVAS
 let cnv; //Container for the canvas
 let bkgImg, bkgWidth, bkgHeight; //Background image for canvas
+let sizeMult = 1;
+let maxBoidNumMult = 5;
+let prenumBoidsMult;
 
 //Define max/min canvas sizes
 const minWidth = 320;
@@ -97,7 +100,7 @@ function preload(){
   }
 
   //Load background image
-  bkgImg = loadImage('./images/backgroundMap.png');
+  bkgImg = loadImage('./images/2021_06_30_00_00_2021_06_30_23_59_Sentinel_2_L2A_True_Color_3.png');
   bkgWidth = bkgImg.width;
   bkgHeight = bkgImg.height;
 
@@ -121,7 +124,8 @@ function setup() {
 
   //Create the canvas
   let canvasWidth = constrain(windowWidth, minWidth, maxWidth);
-  let canvasHeight = map(canvasWidth, minWidth, maxWidth, minHeight, min(maxHeight, windowHeight - 150));
+  let canvasHeight = map(canvasWidth, minWidth, maxWidth, minHeight, windowHeight - 150);
+  canvasHeight = max(canvasHeight, minHeight);
   cnv = createCanvas(windowWidth, canvasHeight);
   cnv.mouseClicked(canvasClicked);  //set callback function for when canvas is clicked
 
@@ -146,20 +150,30 @@ function setup() {
 //----------------------------------------------------------------------------
 //Every frame...
 function draw() {
+  background(0);
 
   //Draw map of Canmore as background
-  background(0);
   imageMode(CENTER);
   //Resize image to fit width of screen or min size
-  if(windowWidth > bkgImg.width){
-    image(bkgImg, width/2, height/2, windowWidth, windowWidth * bkgWidth/bkgHeight);
+  //If image is larger than current canvas
+  if(width <= bkgImg.width && height <= bkgImg.height){
+    image(bkgImg, width/2, height/2);
+  }
+  //If canvas is wider than image but not taller
+  else if(width/height >= bkgImg.width/bkgImg.height){
+    image(bkgImg, width/2, height/2, width, width * bkgImg.height/bkgImg.width);
+  }
+  //If canvas is taller than image but not wider
+  else if(width/height < bkgImg.width/bkgImg.height){
+    image(bkgImg, width/2, height/2, height * bkgImg.width/bkgImg.height, height);
   }
   else{
     image(bkgImg, width/2, height/2);
   }
 
   //Draw tint
-  background(0,255,0,25);
+  //background(0,255,0,10);
+
   drawInstitutions(institutions);     //Draw the institutions
   flock.process();                    //Run the flock (which in turn runs the boids)
   displaySubtitles(activeStory);      //Update the subtitles
@@ -174,7 +188,11 @@ function draw() {
     fr = parseInt(frameRate());
     console.log("hit");
   }
-  text("Frame Rate: " + fr, 60, 200);
+
+  stroke(255);
+  fill(0);
+  textSize(12);
+  text("Frame Rate: " + fr +"\nSizeMult: " + nf(sizeMult,1,3) + "\nnumBoidsMult: " + prenumBoidsMult, 80, 200);
 //End draw
 }
 //----------------------------------------------------------------------------
@@ -236,7 +254,8 @@ function getNearestQBoid(point){
 function windowResized(){
   //Resize the canvas to fit the window (within min and max values)
   let canvasWidth = constrain(windowWidth, minWidth, maxWidth);
-  let canvasHeight = map(canvasWidth, minWidth, maxWidth, minHeight, min(maxHeight, windowHeight - 150));
+  let canvasHeight = map(canvasWidth, minWidth, maxWidth, minHeight, windowHeight - 150);
+  canvasHeight = max(canvasHeight, minHeight);
 
   if(canvasWidth != cnv.width || canvasHeight != cnv.height){ //If the width has changed
                                 //Intended to prevent phone scrolling triggering a resize event
@@ -276,8 +295,20 @@ function loadCanvas(){
   // }
 
   //Determine boid number multiplier by number of intervals in windowWidth
-  let intervalSize = 180;
-  let numBoidsMult = parseInt(windowWidth / intervalSize);
+  let intervalSize = minWidth*minHeight;
+  numBoidsMult = parseInt(width*height / intervalSize);
+  prenumBoidsMult = numBoidsMult;
+
+  //If boid multiplier is at maximum, increase size instead
+  if(numBoidsMult > maxBoidNumMult){
+    //The equation to determine the size multiplier was derived from analyzing
+    //the ideal sizeMult for set numMult, then calculating line of best fit.
+    sizeMult = pow(numBoidsMult, 0.45) / 2.0;
+    numBoidsMult = maxBoidNumMult;
+  }
+  else{
+    sizeMult = 1;
+  }
 
   //Start boid SETTINGS
   //starting values are relative to the size of the canvas and the number of stories
