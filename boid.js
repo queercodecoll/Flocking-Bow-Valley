@@ -47,7 +47,8 @@ class Boid {
 
     //Physics
     this.maxForce = 0.1;  //The max value that ali, sep, coh calculate before multipliers
-    this.maxSpeed = 2.0;  //Fastest that a boid can travel
+    this.maxSpeedBase = 2.0;
+    this.maxSpeed = this.maxSpeedBase * sizeMult;  //Fastest that a boid can travel
     this.position = createVector(random(width), random(height)); //Set boids it random position and velocity
     this.velocity = createVector(random(-1,1), random(-1,1))
     this.velocity.setMag(random(this.maxSpeed));
@@ -550,6 +551,7 @@ class Boid {
     this.neighbourRange = this.neighbourRangeBase * sizeMult; //Determine size-base neighbour range
     this.neighbourFarRange = this.neighbourRange * 1.5; //Re-calc far-neighbour range
     this.experienceDist = this.neighbourRange * 1.5; //Re-calc experience distance
+    this.maxSpeed = this.maxSpeedBase * sizeMult; //Re-calc max speed
     this.boundaryCheck(); //Check that the boids position is not outside the area
     this.findNeighbours(this.parent.boidList); //build the list of neighbours
     this.calcAcceleration(); //Determine flocking variables; alignment, cohesion, separation

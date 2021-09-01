@@ -186,7 +186,6 @@ function draw() {
   //Draw Frame rate
   if(millis() % 500 >= 0 && millis() % 500 <= 25){
     fr = parseInt(frameRate());
-    console.log("hit");
   }
 
   stroke(255);
