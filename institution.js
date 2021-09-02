@@ -9,14 +9,15 @@ class Institution {
   */
   constructor(bType) {
     this.bType = bType;
+    this.size = 10;
     let x,y,pos;
     do{
       x = round(random(width));
       y = round(random(height));
       pos = createVector(x,y);
-    }while(isUnderSubs(pos) && this.overlapingInst());
+    }while(isUnderSubs(pos) || this.overlapingInst(pos));
     this.position = pos;
-    this.size = 10;
+
   }
   //---------------------------------------------------------------------------
   //Draw this institution
@@ -44,9 +45,21 @@ class Institution {
 
   //---------------------------------------------------------------------------
   //Test if this institution is overlapping another
-  overlapingInst(){
-    for(let i in institutions){
-      if(dist(i.x,i.y, this.x,this.y) < this.size*sizeMult){
+  overlapingInst(test){
+    //Test if point is too close to edge
+    if(test.x <= this.size*sizeMult ||
+       test.y <= this.size*sizeMult ||
+       test.x + this.size*sizeMult >= width ||
+       test.y + this.size*sizeMult >= height)
+       {
+         console.log("edge");
+         return true;
+       }
+
+    for(let i of institutions){
+      //Test for overlapping institutions
+      if(dist(i.position.x, i.position.y, test.x, test.y) < (this.size*sizeMult*2)){
+        console.log("hit");
         return true;
       }
     }
