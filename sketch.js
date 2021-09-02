@@ -205,14 +205,13 @@ function draw() {
   }
 
   //Draw Frame rate
-  if(millis() % 500 >= 0 && millis() % 500 <= 25){
-    fr = parseInt(frameRate());
-  }
-
-  stroke(255);
-  fill(0);
-  textSize(12);
-  text("Frame Rate: " + fr +"\nSizeMult: " + nf(sizeMult,1,3) + "\nnumBoidsMult: " + prenumBoidsMult, 80, 200);
+  // if(millis() % 500 >= 0 && millis() % 500 <= 25){
+  //   fr = parseInt(frameRate());
+  // }
+  // stroke(255);
+  // fill(0);
+  // textSize(12);
+  // text("Frame Rate: " + fr +"\nSizeMult: " + nf(sizeMult,1,3) + "\nnumBoidsMult: " + prenumBoidsMult, 80, 200);
 //End draw
 }
 //----------------------------------------------------------------------------
