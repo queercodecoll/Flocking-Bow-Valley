@@ -289,11 +289,11 @@ class Boid {
     //Limit force applied
     if(this.bType === boidType.NORM || activeStory == null || (activeStory != null && !activeStory.isPlaying())){
       this.acceleration.limit(this.maxForce);
-      if(this.id === 0){text("MAXFORCE x 1",30,150);}
+      // if(this.id === 0){text("MAXFORCE x 1",30,150);}
     }
     else{
       this.acceleration.limit(this.maxForce * 5);
-      if(this.id === 0){text("MAXFORCE x 5",30,150);}
+      // if(this.id === 0){text("MAXFORCE x 5",30,150);}
     }
   //End calcAcceleration
   }
