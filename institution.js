@@ -51,14 +51,12 @@ class Institution {
        test.x + this.size*sizeMult >= width ||
        test.y + this.size*sizeMult >= height)
        {
-         console.log("edge");
          return true;
        }
 
     for(let i of institutions){
       //Test for overlapping institutions
       if(dist(i.position.x, i.position.y, test.x, test.y) < (this.size*sizeMult*2)){
-        console.log("hit");
         return true;
       }
     }
