@@ -7,8 +7,11 @@ var institutions = []; //Container for all institutions
 //GLOBAL VARIABLES FOR STORIES
 //String array list of all the stories
 //These are used to create the story objects stored in non-normative boids
-let strStories = ["Kenny_1", "Kenny_2", "Kenny_3", "Kenny_4", "Kenny_5"]; //Stories are created and stored with boid
-let focus = "Kenny_2";
+let strStories = ["Kenny_1", "Kenny_2", "Kenny_3", "Kenny_4", "Kenny_5",
+                  "AnonymousAidan_1", "AnonymousAidan_2", "AnonymousAidan_3", "AnonymousAidan_4", "AnonymousAidan_5", "AnonymousAidan_6",
+                  "Aurora_1", "Aurora_2", "Aurora_3", "Aurora_4", "Aurora_5"
+                  ]; //Stories are created and stored with boid
+let focus = "Kenny_5";
 let objStories = []; //Holds refs to the story objects. Loaded on Preload
 let activeStory; //The current selected/active story
 
@@ -140,13 +143,13 @@ function setup() {
   //Sound analysis setup
   fft = new p5.FFT();
 
-  //Setup the boid world
-  loadCanvas();
-
   //Create the gui - function in ui.js
   createGUI();
-  resizeCanvas(divCanvas.size().width, divCanvas.size().height);
-  console.log(divCanvas.size().height);
+  //resizeCanvas(divCanvas.size().width, divCanvas.size().height);
+  //console.log(divCanvas.size().height);
+
+  //Setup the boid world
+  loadCanvas();
 
 //End setup
 }
@@ -155,6 +158,7 @@ function setup() {
 function draw() {
   background(0);
   resizeCanvas(divCanvas.size().width, divCanvas.size().height);
+
   //Draw map of Canmore as background
   imageMode(CENTER);
   //Resize image to fit width of screen or min size
@@ -269,17 +273,17 @@ function getNearestQBoid(point){
 //This is used to resize the canvas (between min and max values) to fit in the window.
 //To avoid croping off institutions, when canvas is resized the boid world is reloaded.
 //The number of boids and institutions are also relative to the size of the canvas.
-function windowResized(){
+function windowResized(event){
   //Resize the canvas to fit the window (within min and max values)
-  let canvasWidth = constrain(windowWidth, minWidth, maxWidth);
-  let divLegend = document.querySelector("#postCanvasDiv");
+  //let canvasWidth = constrain(windowWidth, minWidth, maxWidth);
+  //let divLegend = document.querySelector("#postCanvasDiv");
   // let canvasHeight = map(canvasWidth, minWidth, maxWidth, minHeight, windowHeight - divLegend.offsetHeight);
   // canvasHeight = max(canvasHeight, minHeight);
-  canvasHeight = windowHeight-windowHeight*0.2;
+  //canvasHeight = windowHeight-windowHeight*0.2;
 
-  if(canvasWidth != cnv.width || canvasHeight != cnv.height){ //If the width has changed
+  if(divCanvas.size().width != cnv.width || divCanvas.size().height != cnv.height){ //If the width has changed
                                 //Intended to prevent phone scrolling triggering a resize event
-    resizeCanvas(windowWidth, canvasHeight);
+    resizeCanvas(divCanvas.size().width, divCanvas.size().height);
 
     //Reload boid world (canvas)
     loadCanvas();
@@ -299,8 +303,8 @@ function loadCanvas(){
   institutions = [];       //Initialize the list of institutions
 
   //Subtitle box variables; set size and position of subtitles.
-  textboxSize = createVector(300,65);
-  textboxPos= createVector(width/2, height-textboxSize.y/2 - 10);
+  textboxSize = createVector(width*tbxWidth, height*tbxHeight);
+  textboxPos= createVector(width/2, height-textboxSize.y/2 - height*tbxMargin);
 
   //Set number of boids per story dependant on canvas size
   // let maxMult = 4;  //Set number of boids per story at maximum canvas size

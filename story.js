@@ -15,7 +15,11 @@
 */
 
 //GLOBAL VARIABLES FOR STORY
-let textboxSize, texboxPos;
+var textboxSize, texboxPos;
+const tbxWidth = 0.3;
+const tbxHeight = 0.20;
+const tbxMargin = 0.025;
+const tbxFontRatio = 0.047;
 
 class Story {
   /*Parameters
@@ -107,8 +111,12 @@ function displaySubtitles(story){
   if(story != null){  //Check that story exists
     if(story.isPlaying()){ //Check that it's playing
 
+      textboxSize = createVector(width*tbxWidth, height*tbxHeight);
+      textboxPos= createVector(width/2, height-textboxSize.y/2 - height*tbxMargin);
+
       //Draw subtitle background
-      fill(200);
+      let bkgCol = 200;
+      fill(bkgCol);
       stroke(225);
       strokeWeight(2);
       rectMode(CENTER);
@@ -122,11 +130,11 @@ function displaySubtitles(story){
 
       //Display text
       fill(0);
-      stroke(200);  //Match box fill colour
-      strokeWeight(1);
+      stroke(bkgCol-25);  //Match box fill colour
+      strokeWeight(2);
       textAlign(CENTER, TOP);
-      textSize(14);
-      text(strSpeaker + "\n" + subtitle, textboxPos.x, textboxPos.y + 5, textboxSize.x, textboxSize.y);
+      textSize(textboxSize.x * tbxFontRatio);
+      text(strSpeaker + "\n\n" + subtitle, textboxPos.x, textboxPos.y + 5, textboxSize.x, textboxSize.y);
     }
   }
 //End displaySubtitles

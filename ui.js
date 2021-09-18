@@ -36,7 +36,7 @@ function createGUI(){
   cbxInteractions.size(200, 40);
   cbxInteractions.style("display","none"); //Hide the checkbox
 
-  //SLIDER
+  //SLIDERsss
   //Create container for all elements; slider heading, data/value, slider element
   //Set as child of Controls division
   divLbl = createDiv();
