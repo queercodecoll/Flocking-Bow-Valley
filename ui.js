@@ -40,7 +40,7 @@ function createGUI(){
   //Create container for all elements; slider heading, data/value, slider element
   //Set as child of Controls division
   divLbl = createDiv();
-  divLbl.parent(divControls5);
+  //divLbl.parent(divControls5);
   divLbl.size(285);
   divLbl.style('border-style', 'solid');
   //Create slider heading

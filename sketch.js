@@ -7,10 +7,8 @@ var institutions = []; //Container for all institutions
 //GLOBAL VARIABLES FOR STORIES
 //String array list of all the stories
 //These are used to create the story objects stored in non-normative boids
-let strStories = ["Anonymous","Dylan (They, Them)","eddy (they, them)",
-                    "Gertie (She, Her)","Gertie (She, Her)_2","Gertie (She, Her)_3",
-                    "Jo","Jo_2","Jo_3","John (He, Him)",
-                    "MC", "Pratim (He, Him)","Riley (She, Her)"];                                                                        //Stories are created and stored with boid
+let strStories = ["Kenny_1", "Kenny_2", "Kenny_3", "Kenny_4", "Kenny_5"]; //Stories are created and stored with boid
+let focus = "Kenny_2";
 let objStories = []; //Holds refs to the story objects. Loaded on Preload
 let activeStory; //The current selected/active story
 
@@ -56,7 +54,7 @@ let fr = 0;
 //----------------------------------------------------------------------------
 //Before showing page...
 function preload(){
-  soundFormats('mp3'); //List of available file formats
+  soundFormats('mp3', 'wav'); //List of available file formats
   let tempStories = strStories;  //copy list of story names into a temp variable
   numStories = tempStories.length;
   storiesLoaded = 0;
@@ -129,10 +127,9 @@ function setup() {
   let canvasWidth = constrain(windowWidth, minWidth, maxWidth);
   let divLegend = select('#postCanvasDiv');
   let canvasHeight = map(canvasWidth, minWidth, maxWidth, minHeight, windowHeight - 200);
-  canvasHeight = windowHeight - 200;
+  canvasHeight = windowHeight - windowHeight*0.2;
   cnv = createCanvas(windowWidth, canvasHeight);
   cnv.mouseClicked(canvasClicked);  //set callback function for when canvas is clicked
-
   //Define colours
   normColour = color(255);
   nonColour = color(255,0,255);
@@ -148,6 +145,8 @@ function setup() {
 
   //Create the gui - function in ui.js
   createGUI();
+  resizeCanvas(divCanvas.size().width, divCanvas.size().height);
+  console.log(divCanvas.size().height);
 
 //End setup
 }
@@ -155,7 +154,7 @@ function setup() {
 //Every frame...
 function draw() {
   background(0);
-
+  resizeCanvas(divCanvas.size().width, divCanvas.size().height);
   //Draw map of Canmore as background
   imageMode(CENTER);
   //Resize image to fit width of screen or min size
@@ -276,7 +275,7 @@ function windowResized(){
   let divLegend = document.querySelector("#postCanvasDiv");
   // let canvasHeight = map(canvasWidth, minWidth, maxWidth, minHeight, windowHeight - divLegend.offsetHeight);
   // canvasHeight = max(canvasHeight, minHeight);
-  canvasHeight = windowHeight-200;
+  canvasHeight = windowHeight-windowHeight*0.2;
 
   if(canvasWidth != cnv.width || canvasHeight != cnv.height){ //If the width has changed
                                 //Intended to prevent phone scrolling triggering a resize event

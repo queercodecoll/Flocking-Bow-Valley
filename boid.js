@@ -349,7 +349,7 @@ class Boid {
     }
 
     //Identify Boid-0
-    if(this.id === 0){
+    if(this.story != null && this.story.name != null && this.story.name == focus){
       stroke(200,0,0);
       strokeWeight(2*sizeMult);
       noFill();
