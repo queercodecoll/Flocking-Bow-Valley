@@ -134,7 +134,9 @@ function displaySubtitles(story){
       strokeWeight(2);
       textAlign(CENTER, TOP);
       textSize(textboxSize.x * tbxFontRatio);
-      text(strSpeaker + "\n\n" + subtitle, textboxPos.x, textboxPos.y + 5, textboxSize.x, textboxSize.y);
+      text(strSpeaker, textboxPos.x + textboxSize.x*0.01, textboxPos.y + textboxSize.y*0.025, textboxSize.x, textboxSize.y);
+      textAlign(CENTER, CENTER);
+      text(subtitle, textboxPos.x + textboxSize.x*0.01, textboxPos.y + textboxSize.y*0.075, textboxSize.x, textboxSize.y);
     }
   }
 //End displaySubtitles
