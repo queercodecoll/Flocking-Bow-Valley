@@ -13,7 +13,7 @@ let strStories = ["Kenny_1", "Kenny_2", "Kenny_3", "Kenny_4", "Kenny_5",
                   "AnonymousTheyThem_1", "AnonymousTheyThem_2", "AnonymousTheyThem_3", "AnonymousTheyThem_4", "AnonymousTheyThem_5", "AnonymousTheyThem_6",
                   "KK_1", "KK_2", "KK_3", "KK_4", "KK_5", "KK_6", "KK_7", "KK_8",
                   "Sarah_1", "Sarah_2", "Sarah_3", "Sarah_4", "Sarah_5", "Sarah_6",
-                  "Jessia_1", "Jessia_2", "Jessia_3", "Jessia_4", "Jessia_5"
+                  "Jessia_1", "Jessia_2", "Jessia_3", "Jessia_4", "Jessia_5", "Jessia_6"
                   ]; //Stories are created and stored with boid
 let focus = "Jessia_5";
 let objStories = []; //Holds refs to the story objects. Loaded on Preload
@@ -324,7 +324,7 @@ function loadCanvas(){
 
   //Determine boid number multiplier by number of intervals in windowWidth
   let intervalSize = minWidth*minHeight;
-  numBoidsMult = parseInt(width*height / intervalSize);
+  numBoidsMult = width*height / intervalSize;
   prenumBoidsMult = numBoidsMult;
 
   //If boid multiplier is at maximum, increase size instead
@@ -340,18 +340,25 @@ function loadCanvas(){
 
   //Start boid SETTINGS
   //starting values are relative to the size of the canvas and the number of stories
-  startNBoids = objStories.length * numBoidsMult;    //Number of normative boids set to number of non-normative boids
-  startQBoids = objStories.length * numBoidsMult;    //Number of non-normative boids is proportional to the number of stories
-  startNInst = 3 * numBoidsMult;                         //Number of normative institutions
-  startQInst = 3 * numBoidsMult;                         //Number of non-normative institutions
+  startNBoids = max(parseInt(13 * numBoidsMult), objStories.length); //Number of normative boids set to number of non-normative boids
+  startQBoids = max(parseInt(13 * numBoidsMult), objStories.length); //Number of non-normative boids is proportional to the number of stories
+  startNInst = max(parseInt(3 * numBoidsMult),ceil(3*objStories.length/13)); //Number of normative institutions
+  startQInst = max(parseInt(3 * numBoidsMult),ceil(3*objStories.length/13)); //Number of non-normative institutions
 
   //Add Q boids
   //creates multiple boids for each story
-  let perStory = floor(startQBoids/objStories.length); //Determine # of boids per story
-  for(let j = 0; j < objStories.length; j++){ //For each story..
-    for(let i=0; i < perStory; i++){ //For each number of multiples of that story...
-      flock.add(boidType.NON, objStories[j]); //Add a new non-normative boid to the flock
-    }
+  // let perStory = floor(startQBoids/objStories.length); //Determine # of boids per story
+  // for(let j = 0; j < objStories.length; j++){ //For each story..
+  //   for(let i=0; i < perStory; i++){ //For each number of multiples of that story...
+  //     flock.add(boidType.NON, objStories[j]); //Add a new non-normative boid to the flock
+  //   }
+  // }
+
+  let storyIndex = 0;
+  while(flock.numQBoids < startNBoids){
+    if(storyIndex >= objStories.length) { storyIndex = 0; }
+    flock.add(boidType.NON, objStories[storyIndex]);
+    storyIndex++;
   }
 
   //Add N Boids
