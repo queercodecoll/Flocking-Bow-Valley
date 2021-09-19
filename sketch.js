@@ -7,10 +7,14 @@ var institutions = []; //Container for all institutions
 //GLOBAL VARIABLES FOR STORIES
 //String array list of all the stories
 //These are used to create the story objects stored in non-normative boids
-let strStories = ["Anonymous","Dylan (They, Them)","eddy (they, them)",
-                    "Gertie (She, Her)","Gertie (She, Her)_2","Gertie (She, Her)_3",
-                    "Jo","Jo_2","Jo_3","John (He, Him)",
-                    "MC", "Pratim (He, Him)","Riley (She, Her)"];                                                                        //Stories are created and stored with boid
+let strStories = ["Kenny_1", "Kenny_2", "Kenny_3", "Kenny_4", "Kenny_5",
+                  "AnonymousAidan_1", "AnonymousAidan_2", "AnonymousAidan_3", "AnonymousAidan_4", "AnonymousAidan_5", "AnonymousAidan_6",
+                  "Aurora_1", "Aurora_2", "Aurora_3", "Aurora_4", "Aurora_5",
+                  "AnonymousTheyThem_1", "AnonymousTheyThem_2", "AnonymousTheyThem_3", "AnonymousTheyThem_4", "AnonymousTheyThem_5", "AnonymousTheyThem_6",
+                  "KK_1", "KK_2", "KK_3", "KK_4", "KK_5", "KK_6", "KK_7", "KK_8",
+                  "Sarah_1", "Sarah_2", "Sarah_3", "Sarah_4", "Sarah_5", "Sarah_6",
+                  "Jessia_1", "Jessia_2", "Jessia_3", "Jessia_4", "Jessia_5", "Jessia_6"
+                  ]; //Stories are created and stored with boid
 let objStories = []; //Holds refs to the story objects. Loaded on Preload
 let activeStory; //The current selected/active story
 
@@ -67,6 +71,8 @@ function preload(){
   divLoading.style('align-items', 'center');
   divLoading.style('border', 'solid');
   divLoading.style('box-shadow', '5px 10px 20px');
+  divLoading.style('position', 'fixed');
+  divLoading.style('z-index', '5');
 
   //Loading Text
   txtLoading = createP("LOADING...");
@@ -277,7 +283,7 @@ function loadCanvas(){
   institutions = [];       //Initialize the list of institutions
 
   //Subtitle box variables; set size and position of subtitles.
-  textboxSize = createVector(300,65);
+  textboxSize = createVector(300,80);
   textboxPos= createVector(width/2, height-textboxSize.y/2 - 10);
 
   //Set number of boids per story dependant on canvas size
@@ -294,7 +300,7 @@ function loadCanvas(){
 
   //Determine boid number multiplier by number of intervals in windowWidth
   let intervalSize = minWidth*minHeight;
-  numBoidsMult = parseInt(width*height / intervalSize);
+  numBoidsMult = width*height / intervalSize;
   prenumBoidsMult = numBoidsMult;
 
   //If boid multiplier is at maximum, increase size instead
@@ -310,18 +316,25 @@ function loadCanvas(){
 
   //Start boid SETTINGS
   //starting values are relative to the size of the canvas and the number of stories
-  startNBoids = objStories.length * numBoidsMult;    //Number of normative boids set to number of non-normative boids
-  startQBoids = objStories.length * numBoidsMult;    //Number of non-normative boids is proportional to the number of stories
-  startNInst = 3 * numBoidsMult;                         //Number of normative institutions
-  startQInst = 3 * numBoidsMult;                         //Number of non-normative institutions
+  startNBoids = max(parseInt(13 * numBoidsMult), objStories.length); //Number of normative boids set to number of non-normative boids
+  startQBoids = max(parseInt(13 * numBoidsMult), objStories.length); //Number of non-normative boids is proportional to the number of stories
+  startNInst = max(parseInt(3 * numBoidsMult),ceil(3*objStories.length/13)); //Number of normative institutions
+  startQInst = max(parseInt(3 * numBoidsMult),ceil(3*objStories.length/13)); //Number of non-normative institutions
 
   //Add Q boids
   //creates multiple boids for each story
-  let perStory = floor(startQBoids/objStories.length); //Determine # of boids per story
-  for(let j = 0; j < objStories.length; j++){ //For each story..
-    for(let i=0; i < perStory; i++){ //For each number of multiples of that story...
-      flock.add(boidType.NON, objStories[j]); //Add a new non-normative boid to the flock
-    }
+  // let perStory = floor(startQBoids/objStories.length); //Determine # of boids per story
+  // for(let j = 0; j < objStories.length; j++){ //For each story..
+  //   for(let i=0; i < perStory; i++){ //For each number of multiples of that story...
+  //     flock.add(boidType.NON, objStories[j]); //Add a new non-normative boid to the flock
+  //   }
+  // }
+
+  let storyIndex = 0;
+  while(flock.numQBoids < startNBoids){
+    if(storyIndex >= objStories.length) { storyIndex = 0; }
+    flock.add(boidType.NON, objStories[storyIndex]);
+    storyIndex++;
   }
 
   //Add N Boids
@@ -352,6 +365,8 @@ function loadCanvas(){
 //Floating box that invites user to select a boid.
 //Follows a random non-normative boid around.
 function drawInvite(){
+  if(followBoid == null) { return; }
+
   let followOffset = 5;
   let position = followBoid.position;
   let size = createVector(105, 50);
@@ -380,6 +395,6 @@ function drawInvite(){
 function selectFollowBoid(){
   do{
       followBoid = random(flock.boidList);
-    }while(followBoid.bType != boidType.NON);
+    }while(followBoid == null || followBoid.bType != boidType.NON);
 //End selectFollowBoid
 }

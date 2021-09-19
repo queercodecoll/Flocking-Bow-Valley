@@ -349,12 +349,12 @@ class Boid {
     }
 
     //Identify Boid-0
-    if(this.id === 0){
-      stroke(200,0,0);
-      strokeWeight(2*sizeMult);
-      noFill();
-      circle(this.position.x, this.position.y, boidSize*6);
-    }
+    // if(this.id === 0){
+    //   stroke(200,0,0);
+    //   strokeWeight(2*sizeMult);
+    //   noFill();
+    //   circle(this.position.x, this.position.y, boidSize*6);
+    // }
 
   //End render
   }
