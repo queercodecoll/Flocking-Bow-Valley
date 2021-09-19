@@ -136,7 +136,7 @@ function displaySubtitles(story){
       textSize(textboxSize.x * tbxFontRatio);
       text(strSpeaker, textboxPos.x + textboxSize.x*0.01, textboxPos.y + textboxSize.y*0.025, textboxSize.x, textboxSize.y);
       textAlign(CENTER, CENTER);
-      text(subtitle, textboxPos.x + textboxSize.x*0.01, textboxPos.y + textboxSize.y*0.075, textboxSize.x, textboxSize.y);
+      text(subtitle, textboxPos.x + textboxSize.x*0.01, textboxPos.y + textboxSize.y*0.08, textboxSize.x, textboxSize.y);
     }
   }
 //End displaySubtitles

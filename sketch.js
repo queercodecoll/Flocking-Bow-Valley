@@ -11,9 +11,11 @@ let strStories = ["Kenny_1", "Kenny_2", "Kenny_3", "Kenny_4", "Kenny_5",
                   "AnonymousAidan_1", "AnonymousAidan_2", "AnonymousAidan_3", "AnonymousAidan_4", "AnonymousAidan_5", "AnonymousAidan_6",
                   "Aurora_1", "Aurora_2", "Aurora_3", "Aurora_4", "Aurora_5",
                   "AnonymousTheyThem_1", "AnonymousTheyThem_2", "AnonymousTheyThem_3", "AnonymousTheyThem_4", "AnonymousTheyThem_5", "AnonymousTheyThem_6",
-                  "KK_1", "KK_2", "KK_3", "KK_4", "KK_5", "KK_6", "KK_7", "KK_8"
+                  "KK_1", "KK_2", "KK_3", "KK_4", "KK_5", "KK_6", "KK_7", "KK_8",
+                  "Sarah_1", "Sarah_2", "Sarah_3", "Sarah_4", "Sarah_5", "Sarah_6",
+                  "Jessia_1", "Jessia_2", "Jessia_3", "Jessia_4", "Jessia_5"
                   ]; //Stories are created and stored with boid
-let focus = "KK_1";
+let focus = "Jessia_5";
 let objStories = []; //Holds refs to the story objects. Loaded on Preload
 let activeStory; //The current selected/active story
 
@@ -37,7 +39,7 @@ let followBoid;
 let cnv; //Container for the canvas
 let bkgImg, bkgWidth, bkgHeight; //Background image for canvas
 let sizeMult = 1;
-let maxBoidNumMult = 3;
+let maxBoidNumMult = 5;
 let prenumBoidsMult;
 
 //Define max/min canvas sizes
