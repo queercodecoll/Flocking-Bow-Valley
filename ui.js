@@ -85,7 +85,7 @@ function createGUI(){
   imgLegend = createImg('images/boidLegend.png', 'legend');
   imgLegend.parent(divLegend);
   imgLegend.size(300,300);
-  imgLegend.style('background-color', 'rgb(175,175,175)');
+  imgLegend.style('background-color', 'rgb(242,242,242)');
 
   //INSTRUCTIONS
   //Get paragraph element for instructions
